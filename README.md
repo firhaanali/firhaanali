@@ -1,16 +1,30 @@
 ## Hi there 👋
 
-<!--
-**firhaanali/firhaanali** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+name: Generate Snake
 
-Here are some ideas to get you started:
+on:
+  schedule:
+    - cron: "0 */6 * * *"  # Setiap 6 jam
+  workflow_dispatch:
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
+    steps:
+      - name: Generate Snake
+        uses: Platane/snk/svg-only@v3
+        with:
+          github_user_name: yourusername
+          outputs: |
+            dist/snake.svg
+            dist/snake-dark.svg?palette=github-dark
+            
+      - name: Push to output branch
+        uses: crazy-max/ghaction-github-pages@v3
+        with:
+          target_branch: output
+          build_dir: dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
