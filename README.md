@@ -1,30 +1,3 @@
 ## Hi there 👋
 
-name: Generate Snake
 
-on:
-  schedule:
-    - cron: "0 */6 * * *"  # Setiap 6 jam
-  workflow_dispatch:
-
-jobs:
-  generate:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    
-    steps:
-      - name: Generate Snake
-        uses: Platane/snk/svg-only@v3
-        with:
-          github_user_name: yourusername
-          outputs: |
-            dist/snake.svg
-            dist/snake-dark.svg?palette=github-dark
-            
-      - name: Push to output branch
-        uses: crazy-max/ghaction-github-pages@v3
-        with:
-          target_branch: output
-          build_dir: dist
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
